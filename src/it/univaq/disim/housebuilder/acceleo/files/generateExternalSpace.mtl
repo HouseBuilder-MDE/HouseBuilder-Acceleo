@@ -1,0 +1,108 @@
+[comment encoding = UTF-8 /]
+[module generateExternalSpace('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::style/]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators /]
+
+[template public generateExternalSpace(anExtSpace : ExternalSpace)]
+
+[file ('ExternalSpace_' + anExtSpace.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>External space [anExtSpace.name/] details page</title>
+	</head>
+	<body>
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+
+		</br>
+
+		<div>The floor <strong>[anExtSpace.floor.name/]</strong> contains the external space <strong>[anExtSpace.name/]</strong></div>
+		
+		</br>
+
+		<div>External space description:</div>
+		<ul>
+			<li>LxW: <strong>[anExtSpace.length/]</strong>x<strong>[anExtSpace.width/]</strong></li>
+			<li>Footage: <strong>[anExtSpace.footage/]</strong></li>
+			<li>Ground type: <strong>[anExtSpace.ground/]</strong></li>
+			<li>Type: <strong>[anExtSpace.type/]</strong></li>
+			<li>Contains <strong>[anExtSpace.passages->size()/]</strong> passages</li>
+			<li>Contains <strong>[anExtSpace.sensors->size()/]</strong> sensors</li>
+			<li>Contains <strong>[anExtSpace.devices->size()/]</strong> devices</li>
+		</ul>
+		
+		[if (anExtSpace.passages->size() > 0)]
+		
+		<h3>Passages</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Between..</th>
+					<th>..and</th>
+					<th>Width</th>
+					<th>Height</th>
+					<th>Type</th>
+					<th>Doors number</th>
+					<th>Link</th>
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Passage | anExtSpace.passages)]
+				[generatePassageRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+		[/if]
+
+
+		[if (anExtSpace.sensors->size() > 0)]
+			<h3>Sensors</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Model</th>
+						<th>Type</th>
+						<th>Located in</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Sensor | anExtSpace.sensors)]
+					[generateSensorRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[/if]
+
+		[if (anExtSpace.devices->size() > 0)]
+			<h3>Devices</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Model</th>
+						<th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Device | anExtSpace.devices)]
+					[generateDeviceRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[/if]
+[comment][/comment]		
+		
+		
+		</br>
+
+	</body>
+</html>
+[/file]
+[/template]

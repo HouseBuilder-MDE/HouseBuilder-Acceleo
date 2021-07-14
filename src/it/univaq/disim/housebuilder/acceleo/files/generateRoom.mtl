@@ -1,0 +1,130 @@
+[comment encoding = UTF-8 /]
+[module generateRoom('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::style/]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators /]
+
+[template public generateRoom(aRoom : Room)]
+
+[file ('Room_' + aRoom.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>Room [aRoom.name/] details page</title>
+	</head>
+	<body>
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+
+		</br>
+
+		<div>The floor <strong>[aRoom.floor.name/]</strong> contains the room <strong>[aRoom.name/]</strong></div>
+		
+		</br>
+
+		<div>Room description:</div>
+		<ul>
+			<li>LxWxH: <strong>[aRoom.length/]</strong>x<strong>[aRoom.width/]</strong>x<strong>[aRoom.width/]</strong></li>
+			<li>Footage: <strong>[aRoom.footage/]</strong></li>
+			<li>Type: <strong>[aRoom.roomType/]</strong></li>
+			<li>Contains <strong>[aRoom.passages->size()/]</strong> passages</li>
+			<li>Contains <strong>[aRoom.windows->size()/]</strong> windows</li>	
+			<li>Contains <strong>[aRoom.sensors->size()/]</strong> sensors</li>
+			<li>Contains <strong>[aRoom.devices->size()/]</strong> devices</li>
+		</ul>
+		
+		[if (aRoom.passages->size() > 0)]
+		
+		<h3>Passages</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Between..</th>
+					<th>..and</th>
+					<th>Width</th>
+					<th>Height</th>
+					<th>Type</th>
+					<th>Doors number</th>
+					<th>Link</th>
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Passage | aRoom.passages)]
+				[generatePassageRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+		[/if]
+
+		[if (aRoom.windows->size() > 0)]
+			<h3>Windows</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Width</th>
+						<th>Height</th>
+						<th>Doors Number</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Window | aRoom.windows)]
+					[generateWindowRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[/if]
+[comment][/comment]
+
+		[if (aRoom.sensors->size() > 0)]
+			<h3>Sensors</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Model</th>
+						<th>Type</th>
+						<th>Located in</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Sensor | aRoom.sensors)]
+					[generateSensorRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[/if]
+
+		[if (aRoom.devices->size() > 0)]
+			<h3>Devices</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Model</th>
+						<th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Device | aRoom.devices)]
+					[generateDeviceRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[/if]
+[comment][/comment]		
+		
+		
+		</br>
+
+	</body>
+</html>
+[/file]
+[/template]
+

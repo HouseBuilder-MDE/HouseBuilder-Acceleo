@@ -1,0 +1,93 @@
+[comment encoding = UTF-8 /]
+[module generateFloor('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::style/]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators /]
+[import it::univaq::disim::housebuilder::acceleo::files::generateRoom /]
+[import it::univaq::disim::housebuilder::acceleo::files::generateExternalSpace /]
+
+[template public generateFloor(aFloor : Floor)]
+[file ('Floor_' + aFloor.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>Floor [aFloor.name/] details page</title>
+	</head>
+	<body>
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+
+		</br>
+
+		<div>The house has a floor in the level <strong>[aFloor.level/]</strong> named <strong>[aFloor.name/]</strong></div>
+		
+		</br>
+		
+		<div>The floor consists of <strong>[getFloorRooms(aFloor)->size()/]</strong> rooms and <strong>[getFloorRooms(aFloor)->size()/]</strong> external spaces</div>
+
+		<h3>Rooms</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Length</th>
+					<th>Width</th>
+					<th>Height</th>
+					<th>Footage</th>
+					<th>Type</th>
+					<th>Link</th>
+				</tr>
+			</thead>
+			<tbody>
+					
+			[for (it : Room | getFloorRooms(aFloor))]
+				[generateRoomRow(it)/]
+			[/for]
+					
+			</tbody>
+		</table>
+		[comment][/comment]
+		
+		</br>
+
+	[if (getFloorExternalSpaces(aFloor)->size() > 0)]
+
+		<h3>External spaces</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Length</th>
+					<th>Width</th>
+					<th>Footage</th>
+					<th>Ground type</th>
+					<th>Type</th>
+					<th>Link</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			[for (it : ExternalSpace | getFloorExternalSpaces(aFloor))]
+				[generateExternalSpaceRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+	[else]
+		<div>The floor has no external spaces</div>
+	[/if]
+	</body>
+</html>
+[/file]
+
+[for (it : Room | getFloorRooms(aFloor))]
+	[it.generateRoom(it)/]
+[/for]
+
+[for (it : ExternalSpace | getFloorExternalSpaces(aFloor))]
+	[it.generateExternalSpace(it)/]
+[/for]
+[/template]
+
+
+[query private getFloorRooms(aFloor : Floor) : Set(Room) = self.spaces->select(s | s.oclIsTypeOf(Room)) /]
+[query private getFloorExternalSpaces(AFloor : Floor) : Set(ExternalSpace) = self.spaces->select(s | s.oclIsTypeOf(ExternalSpace)) /]
+

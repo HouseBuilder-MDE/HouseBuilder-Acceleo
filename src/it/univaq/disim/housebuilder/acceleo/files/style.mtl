@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module style('http://it.univaq.disim/housebuilderV2')]
+
+
+[template public style(oclAny : OclAny)]
+	<style>
+		table, th, td {
+			border: 1px solid black;
+		}
+	</style>
+[/template]

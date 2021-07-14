@@ -1,0 +1,105 @@
+[comment encoding = UTF-8 /]
+[module rowGenerators('http://it.univaq.disim/housebuilderV2')]
+
+[template public generateDeviceRow(aDevice : Device)]
+<tr>
+	<td>[aDevice.name/]</td>
+	<td>[aDevice.model/]</td>
+	<td>[aDevice.type/]</td>
+</tr>
+[/template]
+
+[template public generateSensorRow(aSensor : Sensor)]
+<tr>
+	<td>[aSensor.name/]</td>
+	<td>[aSensor.model/]</td>
+	<td>[aSensor.type/]</td>
+	<td>[aSensor.space.name/]</td>
+</tr>
+[/template]
+
+[template public generateActuatorRow(anActuator : Actuator)]
+<tr>
+	<td>[anActuator.name/]</td>
+	<td>[anActuator.model/]</td>
+	<td>[anActuator.type/]</td>
+	<td>[anActuator.device.name/]</td>
+</tr>
+[/template]
+
+[template public generateRoomRow(aRoom : Room)]
+<tr>
+	<td>[aRoom.name/]</td>
+	<td>[aRoom.length/]</td>
+	<td>[aRoom.width/]</td>
+	<td>[aRoom.height/]</td>
+	<td>[aRoom.footage/]</td>
+	<td>[aRoom.roomType/]</td>
+	<td><a href="['Room_' + aRoom.name.replaceAll(' ', '') + '.html'/]">details page</a></td>
+</tr>
+[/template]
+
+[template public generateExternalSpaceRow(anExtSpace : ExternalSpace)]
+<tr>
+	<td>[anExtSpace.name/]</td>
+	<td>[anExtSpace.length/]</td>
+	<td>[anExtSpace.width/]</td>
+	<td>[anExtSpace.footage/]</td>
+	<td>[anExtSpace.ground/]</td>
+	<td>[anExtSpace.type/]</td>
+	<td><a href="['ExternalSpace_' + anExtSpace.name.replaceAll(' ', '') + '.html'/]">details page</a></td>
+</tr>
+[/template]
+
+[template public generateFloorRow(aFloor : Floor)]
+<tr>
+	<td>[aFloor.name/]</td>
+	<td>[aFloor.level/]</td>
+	<td>[aFloor.outerFootage/]</td>
+	<td>[aFloor.internalFootage/]</td>
+	<td>[aFloor.footage/]</td>
+	<td><a href="['Floor_' + aFloor.name.replaceAll(' ', '') + '.html'/]">details page</a></td>
+</tr>
+[/template]
+
+[template public generatePassageRow(aPassage : Passage)]
+<tr>
+	<td>[aPassage.spaceA.name/]</td>
+	<td>[aPassage.spaceB.name/]</td>
+	<td>[aPassage.width/]</td>
+	<td>[aPassage.height/]</td>
+	<td>[aPassage.doorType/]</td>
+	<td>[aPassage.doorsNumber/]</td>
+	<td><a href="['Passage_' + aPassage.name.replaceAll(' ', '') + '.html'/]">details page</a></td>
+</tr>
+[/template]
+
+[template public generateEntranceRow(anEntrance : Entrance)]
+<tr>
+	<td>[anEntrance.name/]</td>
+	<td>[anEntrance.width/]</td>
+	<td>[anEntrance.height/]</td>
+	<td>[anEntrance.space.name/]</td>
+	<td>[anEntrance.doorType/]</td>
+	<td>[anEntrance.doorsNumber/]</td>
+</tr>
+[/template]
+
+[template public generateControllerRow(aController : Controller)]
+<tr>
+	<td>[aController.name/]</td>
+	<td>[aController.model/]</td>
+	<td>[aController.os/]</td>
+	<td>[aController.osVersion/]</td>
+	<td><a href="['Controller_' + aController.name.replaceAll(' ', '') + '.html'/]">details page</a></td>
+</tr>
+[/template]
+
+[template public generateWindowRow(aWindow : Window)]
+<tr>
+	<td>[aWindow.name/]</td>
+	<td>[aWindow.width/]</td>
+	<td>[aWindow.height/]</td>
+	<td>[aWindow.doorsNumber/]</td>
+</tr>
+[/template]

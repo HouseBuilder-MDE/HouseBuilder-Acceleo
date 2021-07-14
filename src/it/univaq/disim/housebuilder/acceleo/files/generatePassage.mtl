@@ -1,0 +1,54 @@
+[comment encoding = UTF-8 /]
+[module generatePassage('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::style/]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators /]
+
+
+[template public generatePassage(aPassage : Passage)]
+
+[file ('Passage_' + aPassage.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>Passage [aPassage.name/] details page</title>
+	</head>
+	<body>
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+
+		</br>
+
+		<div>The house has a passage between <strong>[aPassage.spaceA.name/]</strong> and <strong>[aPassage.spaceB.name/]</strong></div>
+		
+		</br>
+
+		[if (aPassage.doorType.toString() <> 'EMPTY')]
+			<div>The passage is of the <strong>[aPassage.doorType/]</strong> type and has <strong>[aPassage.doorsNumber/]</strong> doors</div>
+		[/if]
+		[if (aPassage.devices->size() > 0)]
+			<div>The passages contains these devices:</div>
+			[comment][/comment]
+			</br>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Model</th>
+						<th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Device | aPassage.devices)]
+					[generateDeviceRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[else]
+			<div>The passage has no devices</div>
+		[/if]
+	</body>
+</html>
+[/file]
+[/template]

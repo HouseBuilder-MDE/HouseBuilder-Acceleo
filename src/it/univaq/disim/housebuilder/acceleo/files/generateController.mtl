@@ -1,0 +1,80 @@
+[comment encoding = UTF-8 /]
+[module generateController('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::style /]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators /]
+
+[template public generateController(aController : Controller)]
+
+[file ('Controller_' + aController.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>Controller [aController.name/] details page</title>
+	</head>
+	<body>
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+
+		</br>
+
+		<div>The house <strong>[aController.house.name/]</strong> is smart and has the <strong>[aController.name/]</strong> controller</div>
+		
+		</br>
+
+		<div>Controller description:</div>
+		<ul>
+			<li>Model: <strong>[aController.model/]</strong></li>
+			<li>OS: <strong>[aController.model/]</strong></li>
+			<li>OS version: <strong>[aController.model/]</strong></li>
+			<li>Contains <strong>[aController.sensors->size()/]</strong> sensors</li>
+			<li>Contains <strong>[aController.actuators->size()/]</strong> actuators</li>
+		</ul>
+
+		[if (aController.sensors->size() > 0)]
+		
+		<h3>Sensors</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Model</th>
+					<th>Type</th>
+					<th>Located in</th>
+				
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Sensor | aController.sensors)]
+				[generateSensorRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+		[/if]
+
+		[if (aController.actuators->size() > 0)]
+		
+		<h3>Actuators</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Model</th>
+					<th>Type</th>
+					<th>Connected to</th>
+				
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Actuator | aController.actuators)]
+				[generateActuatorRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+		[/if]
+	</body>
+</html>
+[/file]
+[/template]

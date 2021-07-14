@@ -1,0 +1,51 @@
+[comment encoding = UTF-8 /]
+[module generateEntrance('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::style /]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators /]
+
+[template public generateEntrance(anEntrance : Entrance)]
+[file ('Entrance_' + anEntrance.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>Entrance [anEntrance.name/] details page</title>
+	</head>
+	<body>
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+
+		</br>
+
+		<div>The house has an entrance that takes you to <strong>[anEntrance.space.name/]</strong></div>
+		</br>
+
+		[if (anEntrance.doorType.toString() <> 'EMPTY')]
+			<div>The entrance is of the <strong>[anEntrance.doorType/]</strong> type and has <strong>[anEntrance.doorsNumber/]</strong> doors</div>
+		[/if]
+		[if (anEntrance.devices->size() > 0)]
+			<div>The entrance contains these devices:</div>
+			[comment][/comment]
+			</br>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Model</th>
+						<th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				[for (it : Device | anEntrance.devices)]
+					[generateDeviceRow(it)/]
+				[/for]
+					
+				</tbody>
+			</table>
+		[else]
+			<div>The passage has no devices</div>
+		[/if]
+	</body>
+</html>
+[/file]
+[/template]

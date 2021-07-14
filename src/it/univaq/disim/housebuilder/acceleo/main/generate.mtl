@@ -1,0 +1,165 @@
+[comment encoding = UTF-8 /]
+[module generate('http://it.univaq.disim/housebuilderV2')]
+[import it::univaq::disim::housebuilder::acceleo::files::generateFloor /]
+[import it::univaq::disim::housebuilder::acceleo::files::generatePassage/]
+[import it::univaq::disim::housebuilder::acceleo::files::generateController /]
+[import it::univaq::disim::housebuilder::acceleo::files::style/]
+[import it::univaq::disim::housebuilder::acceleo::files::rowGenerators/]
+[import it::univaq::disim::housebuilder::acceleo::files::generateEntrance /]
+
+
+[template public generateElement(aHouse : House)]
+[comment @main/]
+[file ('House_' + aHouse.name.replaceAll(' ', '') + '.html', false, 'UTF-8')]
+<html>
+	<head>
+		[style()/]
+		<title>The house [aHouse.name/] home page</title>
+	</head>
+	<body>
+		<h1>This page summerizes floors, passages and entrances of the '[aHouse.name/]' house.</h1>
+		
+		<div>House description:</div>
+		<ul>
+			<li>State: <strong>[aHouse.state/]</strong></li>
+			<li>Province: <strong>[aHouse.province/]</strong></li>
+			<li>City: <strong>[aHouse.city/]</strong></li>
+			<li>Postal code: <strong>[aHouse.postalCode/]</strong></li>
+			<li>Address: <strong>[aHouse.address/]</strong></li>
+			<li>Building date: <strong>[aHouse.buildingDate/]</strong></li>
+			<li>Internal footage: <strong>[aHouse.internalFootage/]</strong></li>
+			<li>External footage: <strong>[aHouse.outerFootage/]</strong></li>
+			<li>Footage: <strong>[aHouse.footage/]</strong></li>
+		</ul>
+
+		</br>
+
+		<div>The house consists of:</div>
+		<ul>
+			<li><strong>[aHouse.floors->size()/]</strong> floors</li>
+			<li><strong>[aHouse.passages->size()/]</strong> passages/doors</li>
+			<li><strong>[aHouse.entrances->size()/]</strong> entrances</li>
+		[if (aHouse.controllers->size() > 0)]
+			<li>[aHouse.controllers->size()/] controllers (home automation)</li>
+		[/if]
+		</ul>
+
+[comment][/comment]
+		<h2>Floors</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Level</th>
+					<th>Internal footage</th>
+					<th>Outer footage</th>
+					<th>Total footage</th>
+					<th>Link</th>
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Floor | aHouse.floors->sortedBy(f | f.level)->reverse())]
+				[generateFloorRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+[comment][/comment]
+
+	[if (aHouse.passages->size() > 0)]
+		
+
+		<h2>Passages</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Between..</th>
+					<th>..and</th>
+					<th>Width</th>
+					<th>Height</th>
+					<th>Type</th>
+					<th>Doors number</th>
+					<th>Link</th>
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Passage | aHouse.passages)]
+				[generatePassageRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+	[/if]
+[comment][/comment]
+		
+		<h2>Entrances</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Width</th>
+					<th>Height</th>
+					<th>Takes to</th>
+					<th>Type</th>
+					<th>Doors Number</th>
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Entrance | aHouse.entrances)]
+				[generateEntranceRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+[comment][/comment]	
+	
+	[if (aHouse.controllers->size() > 0)]
+		
+
+		<h2>Controllers</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Model</th>
+					<th>OS</th>
+					<th>OS version</th>
+					<th>Link</th>
+				<tr>
+			</thead>
+			<tbody>
+				
+			[for (it : Controller | aHouse.controllers)]
+				[generateControllerRow(it)/]
+			[/for]
+				
+			</tbody>
+		</table>
+	[/if]
+[comment][/comment]
+	</body>
+</html>
+[/file]
+
+[for (it : Floor | aHouse.floors)]
+[it.generateFloor(it)/]
+[/for]
+
+[for (it : Passage | aHouse.passages)]
+[it.generatePassage(it)/]
+[/for]
+
+[for (it : Entrance | aHouse.entrances)]
+[it.generateEntrance(it)/]
+[/for]
+
+[for (it : Controller | aHouse.controllers)]
+[it.generateController(it)/]
+[/for]
+
+[/template]
+
+
